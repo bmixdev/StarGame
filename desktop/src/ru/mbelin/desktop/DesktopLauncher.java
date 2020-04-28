@@ -2,6 +2,7 @@ package ru.mbelin.desktop;
 
 import com.badlogic.gdx.backends.lwjgl.LwjglApplication;
 import com.badlogic.gdx.backends.lwjgl.LwjglApplicationConfiguration;
+
 import ru.mbelin.StarGame;
 
 public class DesktopLauncher {
