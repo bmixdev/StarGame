@@ -14,6 +14,7 @@ import java.util.List;
 import ru.mbelin.base.BaseScreen;
 import ru.mbelin.model.MrDick;
 import ru.mbelin.model.Unit;
+import ru.mbelin.utils.Utils;
 
 public class MenuScreen extends BaseScreen {
     private static final int STAR_COUNT = 256;
@@ -41,15 +42,15 @@ public class MenuScreen extends BaseScreen {
         moveToVector = new Vector2(0, 0);
         unitList = new ArrayList<>();
         makeUnits();
-        System.out.println();
+        screenWidth = Gdx.graphics.getWidth();
+        screenHeight = Gdx.graphics.getHeight();
     }
 
     private void makeUnits() {
-        for (int i = 0; i <3 ; i++) {
+        //    unitList.add(new MrDick("her.png", new Vector2(20, 20), 1f, 0, 128, 128));
             unitList.add(new MrDick("her.png", new Vector2(20, 20), 1f, 0));
-            unitList.add(new MrDick("her.png", new Vector2(400, 33), 3f * i, 0.001f, 48, 48));
-            unitList.add(new MrDick("her.png", new Vector2(700, 400), 5f * i , 1, 24, 24));
-        }
+         //   unitList.add(new MrDick("her.png", new Vector2(400, 33), 3f , 0.001f, 48, 48));
+       //     unitList.add(new MrDick("her.png", new Vector2(700, 400), 5f  , 1, 24, 24));
     }
 
     @Override
@@ -77,10 +78,11 @@ public class MenuScreen extends BaseScreen {
     private void draw() {
         Gdx.gl.glClearColor(1, 0, 0, 1);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        unitList.forEach((u) -> u.moveTo(moveToVector));
         batch.begin();
         batch.draw(bg, 0 , 0, screenWidth, screenHeight);
-        unitList.forEach((u) -> u.draw(batch));
+        for (Unit u:unitList) {
+            u.moveToVector(); u.draw(batch);
+        }
         batch.end();
         drawText();
     }
@@ -90,9 +92,18 @@ public class MenuScreen extends BaseScreen {
         return super.mouseMoved(screenX, screenY);
     }
 
+    private void touchProcess(int x, int y) {
+        moveToVector.set(x, y);
+        for (Unit u:unitList) {
+            ((MrDick) u).setMoveToVector(moveToVector);
+        }
+        int size = Utils.getRandomNumberUsingNextInt(48, 128);
+        unitList.add(new MrDick("monsters/"+String.valueOf(Utils.getRandomNumberUsingNextInt(1, 40))+".png", new Vector2(moveToVector), Utils.getRandomNumberUsingNextInt(1, 5) , 0, size, size));
+    }
+
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        moveToVector.set(screenX, (Gdx.graphics.getHeight() - screenY));
+        touchProcess(screenX, (Gdx.graphics.getHeight() - screenY));
         return super.touchDown(screenX, screenY, pointer, button);
     }
 

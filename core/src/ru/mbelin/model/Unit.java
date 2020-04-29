@@ -10,7 +10,7 @@ public abstract class Unit extends Texture {
         super(internalPath);
     }
 
-    public abstract void moveTo(Vector2 v);
+    public abstract void moveToVector();
 
     public abstract void draw(SpriteBatch batch);
 
