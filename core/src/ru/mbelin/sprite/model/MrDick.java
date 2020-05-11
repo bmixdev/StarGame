@@ -1,11 +1,11 @@
-package ru.mbelin.model;
+package ru.mbelin.sprite.model;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import ru.mbelin.math.Rect;
 import ru.mbelin.utils.Utils;
 
 public class MrDick extends Unit {
@@ -20,8 +20,8 @@ public class MrDick extends Unit {
     private int width = 64;
     private Vector2 moveToVector;
 
-    public MrDick(String internalPath, Vector2 position, float velocity, float gravity) {
-        super(internalPath);
+    public MrDick(TextureRegion textureRegion, Vector2 position, float velocity, float gravity) {
+        super(textureRegion);
         this.positionVector = position;
         this.velocity = velocity;
         this.gravity = gravity;
@@ -32,8 +32,8 @@ public class MrDick extends Unit {
         this.moveToVector = new Vector2();
     }
 
-    public MrDick(String internalPath, Vector2 position, float velocity, float gravity, int heigth, int width) {
-        super(internalPath);
+    public MrDick(TextureRegion textureRegion, Vector2 position, float velocity, float gravity, int heigth, int width) {
+        super(textureRegion);
         this.heigth = heigth;
         this.width = width;
         this.positionVector = position;
@@ -80,7 +80,7 @@ public class MrDick extends Unit {
     }
 
     public void draw(SpriteBatch batch) {
-        batch.draw(this, this.positionVector.x, this.positionVector.y, heigth, width);
+        this.draw(batch, this.positionVector);//batch.draw(this, this.positionVector.x, this.positionVector.y, heigth, width);
     }
 
     @Override
@@ -104,5 +104,11 @@ public class MrDick extends Unit {
 
     public void setMoveToVector(Vector2 moveToVector) {
         this.moveToVector = new Vector2(moveToVector);
+    }
+
+    @Override
+    public void resize(Rect worldBounds) {
+        setHeightProportion(1f);
+        this.pos.set(worldBounds.pos);
     }
 }
