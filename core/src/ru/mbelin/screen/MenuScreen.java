@@ -2,18 +2,22 @@ package ru.mbelin.screen;
 
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import ru.mbelin.base.BaseScreen;
-import ru.mbelin.model.MrDick;
-import ru.mbelin.model.Unit;
+import ru.mbelin.math.Rect;
+import ru.mbelin.sprite.ButtonExit;
+import ru.mbelin.sprite.ButtonPlay;
+import ru.mbelin.sprite.Logo;
+import ru.mbelin.sprite.model.MrDick;
+import ru.mbelin.sprite.model.Unit;
+import ru.mbelin.sprite.Background;
 import ru.mbelin.utils.Utils;
 
 public class MenuScreen extends BaseScreen {
@@ -21,13 +25,21 @@ public class MenuScreen extends BaseScreen {
 
     private final Game game;
 
-    private Texture bg;
     private BitmapFont font;
 
-    int screenWidth, screenHeight;
+ //   int screenWidth, screenHeight;
 
     private Vector2 moveToVector;
     private List<Unit> unitList;
+
+    private Texture bg;
+    private Background background;
+
+    private Texture lg;
+    private Logo logo;
+
+    private ButtonExit buttonExit;
+    private ButtonPlay buttonPlay;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -36,21 +48,32 @@ public class MenuScreen extends BaseScreen {
     @Override
     public void show() {
         super.show();
-        bg = new Texture("textures/background.jpg");
         font = new BitmapFont();
         font.setColor(0.4f, 0.5f, 2f, 0.51f);
         moveToVector = new Vector2(0, 0);
         unitList = new ArrayList<>();
-        makeUnits();
-        screenWidth = Gdx.graphics.getWidth();
-        screenHeight = Gdx.graphics.getHeight();
+       // makeUnits();
+        bg = new Texture("textures/background.jpg");
+        background = new Background(bg);
+        lg = new Texture("stargame.png");
+        logo = new Logo(lg);
+        buttonExit = new ButtonExit();
+        buttonPlay = new ButtonPlay(game);
     }
 
     private void makeUnits() {
         //    unitList.add(new MrDick("her.png", new Vector2(20, 20), 1f, 0, 128, 128));
-            unitList.add(new MrDick("her.png", new Vector2(20, 20), 1f, 0));
+            unitList.add(new MrDick(new TextureRegion(new Texture("her.png")), new Vector2(20, 20), 1f, 0));
          //   unitList.add(new MrDick("her.png", new Vector2(400, 33), 3f , 0.001f, 48, 48));
        //     unitList.add(new MrDick("her.png", new Vector2(700, 400), 5f  , 1, 24, 24));
+    }
+
+    @Override
+    public void resize(Rect worldBounds) {
+        background.resize(worldBounds);
+        logo.resize(worldBounds);
+        buttonExit.resize(worldBounds);
+        buttonPlay.resize(worldBounds);
     }
 
     @Override
@@ -60,15 +83,13 @@ public class MenuScreen extends BaseScreen {
 
     @Override
     public void dispose() {
-        batch.dispose();
+        lg.dispose();
         bg.dispose();
         super.dispose();
     }
 
     private void drawText() {
-        screenWidth = Gdx.graphics.getWidth();
-        screenHeight = Gdx.graphics.getHeight();
-        CharSequence str = "Screen (Width: " +screenWidth+"; Height: "+screenHeight+";)";
+        CharSequence str = "Screen (Width: " +Gdx.graphics.getWidth()+"; Height: "+Gdx.graphics.getHeight()+";)";
         batch.begin();
         font.draw(batch, str, 10, 20);
         font.draw(batch, "MoveTo("+moveToVector.x+","+moveToVector.y+")", 10, 40);
@@ -76,15 +97,18 @@ public class MenuScreen extends BaseScreen {
     }
 
     private void draw() {
-        Gdx.gl.glClearColor(1, 0, 0, 1);
-        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         batch.begin();
-        batch.draw(bg, 0 , 0, screenWidth, screenHeight);
+        background.draw(batch);
+        logo.draw(batch);
+        buttonExit.draw(batch);
+        buttonPlay.draw(batch);
+        /*
         for (Unit u:unitList) {
-            u.moveToVector(); u.draw(batch);
+            u.moveToVector(); ((MrDick)u).draw(batch);
         }
+         */
         batch.end();
-        drawText();
+     //   drawText();
     }
 
     @Override
@@ -94,17 +118,33 @@ public class MenuScreen extends BaseScreen {
 
     private void touchProcess(int x, int y) {
         moveToVector.set(x, y);
+        /*
         for (Unit u:unitList) {
             ((MrDick) u).setMoveToVector(moveToVector);
         }
         int size = Utils.getRandomNumberUsingNextInt(48, 128);
-        unitList.add(new MrDick("monsters/"+String.valueOf(Utils.getRandomNumberUsingNextInt(1, 40))+".png", new Vector2(moveToVector), Utils.getRandomNumberUsingNextInt(1, 5) , 0, size, size));
+       unitList.add(new MrDick( new TextureRegion( new Texture("monsters/"+String.valueOf(Utils.getRandomNumberUsingNextInt(1, 40))+".png")), new Vector2(moveToVector), Utils.getRandomNumberUsingNextInt(1, 5) , 0, size, size));
+      */
     }
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
         touchProcess(screenX, (Gdx.graphics.getHeight() - screenY));
         return super.touchDown(screenX, screenY, pointer, button);
+    }
+
+    @Override
+    public boolean touchDown(Vector2 touch, int pointer, int button) {
+        buttonExit.touchDown(touch, pointer);
+        buttonPlay.touchDown(touch, pointer);
+        return false;
+    }
+
+
+    public boolean touchUp(Vector2 touch, int pointer, int button) {
+        buttonExit.touchUp(touch, pointer);
+        buttonPlay.touchUp(touch, pointer);
+        return false;
     }
 
 }
