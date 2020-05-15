@@ -20,7 +20,7 @@ public class ButtonExit extends BaseButton {
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(0.1f);
+        setHeightProportion(0.12f);
         setRight(worldBounds.getRight() - 0.05f);
         setBottom(worldBounds.getBottom() + 0.05f);
     }

@@ -14,7 +14,7 @@ public class ButtonPlay extends BaseButton {
     private Game game;
 
     public ButtonPlay(Game game) {
-        super(new TextureRegion(new Texture("buttonPlay.jpg")));
+        super(new TextureRegion(new Texture("buttonPlay.png")));
         this.game  = game;
     }
 
@@ -25,7 +25,7 @@ public class ButtonPlay extends BaseButton {
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(0.1f);
+        setHeightProportion(0.12f);
         setRight(worldBounds.getLeft() + 0.2f);
         setBottom(worldBounds.getBottom() + 0.05f);
     }
