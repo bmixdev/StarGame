@@ -11,6 +11,7 @@ import com.badlogic.gdx.math.Vector2;
 
 import ru.mbelin.math.MatrixUtils;
 import ru.mbelin.math.Rect;
+
 public class BaseScreen implements Screen, InputProcessor {
 
     protected SpriteBatch batch;
