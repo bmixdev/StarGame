@@ -2,6 +2,7 @@ package ru.mbelin.sprite;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import ru.mbelin.base.BaseButton;
@@ -9,8 +10,10 @@ import ru.mbelin.math.Rect;
 
 public class ButtonExit extends BaseButton {
 
-    public ButtonExit() {
-        super(new TextureRegion(new Texture("buttonExit.png")));
+    private static final float MARGIN = 0.05f;
+
+    public ButtonExit(TextureAtlas atlas) {
+        super(atlas.findRegion("buttonExit"));
     }
 
     @Override
@@ -21,7 +24,8 @@ public class ButtonExit extends BaseButton {
     @Override
     public void resize(Rect worldBounds) {
         setHeightProportion(0.12f);
-        setRight(worldBounds.getRight() - 0.05f);
-        setBottom(worldBounds.getBottom() + 0.05f);
+        setBottom(worldBounds.getBottom() + MARGIN);
+        setRight(worldBounds.getRight() - MARGIN);
+        super.resize(worldBounds);
     }
 }

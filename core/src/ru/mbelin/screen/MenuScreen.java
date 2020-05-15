@@ -4,6 +4,7 @@ import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
@@ -15,6 +16,7 @@ import ru.mbelin.math.Rect;
 import ru.mbelin.sprite.ButtonExit;
 import ru.mbelin.sprite.ButtonPlay;
 import ru.mbelin.sprite.Logo;
+import ru.mbelin.sprite.Star;
 import ru.mbelin.sprite.model.MrDick;
 import ru.mbelin.sprite.model.Unit;
 import ru.mbelin.sprite.Background;
@@ -38,8 +40,11 @@ public class MenuScreen extends BaseScreen {
     private Texture lg;
     private Logo logo;
 
+    private TextureAtlas atlas;
     private ButtonExit buttonExit;
     private ButtonPlay buttonPlay;
+
+    private Star[] stars;
 
     public MenuScreen(Game game) {
         this.game = game;
@@ -53,17 +58,27 @@ public class MenuScreen extends BaseScreen {
         moveToVector = new Vector2(0, 0);
         unitList = new ArrayList<>();
        // makeUnits();
-        bg = new Texture("textures/background.jpg");
+        bg = new Texture("textures/background.png");
         background = new Background(bg);
-        lg = new Texture("stargame.png");
+        atlas = new TextureAtlas(Gdx.files.internal("textures/menu/menuAtlas.tpack"));
+        lg = new Texture("textures/stargame.png");
         logo = new Logo(lg);
-        buttonExit = new ButtonExit();
-        buttonPlay = new ButtonPlay(game);
+
+
+        stars = new Star[24];
+        for (int i = 0; i < stars.length; i++) {
+            stars[i] = new Star(atlas);
+        }
+
+        buttonExit = new ButtonExit(atlas);
+        buttonPlay = new ButtonPlay(atlas, game);
+
+
     }
 
     private void makeUnits() {
         //    unitList.add(new MrDick("her.png", new Vector2(20, 20), 1f, 0, 128, 128));
-            unitList.add(new MrDick(new TextureRegion(new Texture("her.png")), new Vector2(20, 20), 1f, 0));
+            unitList.add(new MrDick(new TextureRegion(new Texture("textures/her.png")), new Vector2(20, 20), 1f, 0));
          //   unitList.add(new MrDick("her.png", new Vector2(400, 33), 3f , 0.001f, 48, 48));
        //     unitList.add(new MrDick("her.png", new Vector2(700, 400), 5f  , 1, 24, 24));
     }
@@ -74,10 +89,15 @@ public class MenuScreen extends BaseScreen {
         logo.resize(worldBounds);
         buttonExit.resize(worldBounds);
         buttonPlay.resize(worldBounds);
+        for (Star star : stars) {
+            star.resize(worldBounds);
+        }
     }
 
     @Override
     public void render(float delta) {
+        super.render(delta);
+        update(delta);
         draw();
     }
 
@@ -96,12 +116,25 @@ public class MenuScreen extends BaseScreen {
         batch.end();
     }
 
+
+    private void update(float delta) {
+        for (Star star : stars) {
+            star.update(delta);
+        }
+        buttonPlay.update(delta);
+        buttonExit.update(delta);
+    }
+
     private void draw() {
         batch.begin();
         background.draw(batch);
-        logo.draw(batch);
+
+        for (Star star : stars) {
+            star.draw(batch);
+        }
         buttonExit.draw(batch);
         buttonPlay.draw(batch);
+        logo.draw(batch);
         /*
         for (Unit u:unitList) {
             u.moveToVector(); ((MrDick)u).draw(batch);

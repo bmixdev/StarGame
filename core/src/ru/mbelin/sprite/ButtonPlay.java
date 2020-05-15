@@ -3,6 +3,7 @@ package ru.mbelin.sprite;
 import com.badlogic.gdx.Game;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 import ru.mbelin.base.BaseButton;
@@ -13,8 +14,10 @@ public class ButtonPlay extends BaseButton {
 
     private Game game;
 
-    public ButtonPlay(Game game) {
-        super(new TextureRegion(new Texture("buttonPlay.png")));
+    private static final float MARGIN = 0.05f;
+
+    public ButtonPlay(TextureAtlas atlas, Game game) {
+        super(atlas.findRegion("buttonPlay"));
         this.game  = game;
     }
 
@@ -26,7 +29,8 @@ public class ButtonPlay extends BaseButton {
     @Override
     public void resize(Rect worldBounds) {
         setHeightProportion(0.12f);
-        setRight(worldBounds.getLeft() + 0.2f);
-        setBottom(worldBounds.getBottom() + 0.05f);
+        setBottom(worldBounds.getBottom() + MARGIN);
+        setLeft(worldBounds.getLeft() + MARGIN);
+        super.resize(worldBounds);
     }
 }
