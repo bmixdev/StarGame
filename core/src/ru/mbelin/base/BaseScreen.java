@@ -3,6 +3,7 @@ package ru.mbelin.base;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.InputProcessor;
 import com.badlogic.gdx.Screen;
+import com.badlogic.gdx.audio.Music;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.math.Matrix3;
@@ -17,13 +18,18 @@ public class BaseScreen implements Screen, InputProcessor {
     protected SpriteBatch batch;
 
     private Rect screenBounds;
+
     private Rect worldBounds;
+
     private Rect glBounds;
 
     private Matrix4 worldToGl;
+
     private Matrix3 screenToWorld;
 
     private Vector2 touch;
+
+    Music music = Gdx.audio.newMusic(Gdx.files.internal("sounds/music.mp3"));
 
     @Override
     public void show() {
@@ -35,6 +41,10 @@ public class BaseScreen implements Screen, InputProcessor {
         worldToGl = new Matrix4();
         screenToWorld = new Matrix3();
         touch = new Vector2();
+        music.play();
+        music.setVolume(0.5f);                 // устанавливает громкость на половину максимального объема
+        music.setLooping(true);                // повторное воспроизведение, пока не будет вызван music.stop()
+
     }
 
     @Override
@@ -78,6 +88,7 @@ public class BaseScreen implements Screen, InputProcessor {
     @Override
     public void dispose() {
         batch.dispose();
+        music.dispose();
     }
 
     @Override
