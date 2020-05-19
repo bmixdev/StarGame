@@ -1,6 +1,8 @@
 package ru.mbelin.sprite;
 
+import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.Input;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
@@ -30,6 +32,11 @@ public class MainShip extends Sprite {
     private TextureRegion bulletRegion;
     private Vector2 bulletV;
 
+    // тамер выстрела
+    private float shootTimer;
+    private float shootTimerInterval = 0.5f;;
+
+    private Sound soundShot = Gdx.audio.newSound(Gdx.files.internal("sounds/bullet.wav"));
     public MainShip(TextureAtlas atlas, BulletPool bulletPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
         this.bulletPool = bulletPool;
@@ -58,6 +65,11 @@ public class MainShip extends Sprite {
         if (getRight() > worldBounds.getRight()) {
             stop();
             setRight(worldBounds.getRight());
+        }
+        shootTimer += delta;
+        if (shootTimer >= shootTimerInterval) {
+            shoot();
+            shootTimer = 0f;
         }
     }
 
@@ -157,5 +169,6 @@ public class MainShip extends Sprite {
     private void shoot() {
         Bullet bullet = bulletPool.obtain();
         bullet.set(this, bulletRegion, pos, bulletV, 0.01f, worldBounds, 1);
+        long id = soundShot.play(0.5f);
     }
 }

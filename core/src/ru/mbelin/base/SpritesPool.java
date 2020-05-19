@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import java.util.ArrayList;
 import java.util.List;
 
+import ru.mbelin.math.Rect;
+
 public abstract class SpritesPool<T extends Sprite> {
 
     private final List<T> activeObjects = new ArrayList<>();
@@ -67,6 +69,13 @@ public abstract class SpritesPool<T extends Sprite> {
             freeObjects.add(object);
         }
         System.out.println(getClass().getName() + " active/free: " + activeObjects.size() + "/" + freeObjects.size());
+    }
+
+    public void resize(Rect worldBounds) {
+        for (int i = 0; i < activeObjects.size(); i++) {
+            T object = activeObjects.get(i);
+            object.resize(worldBounds);
+        }
     }
 
 }
