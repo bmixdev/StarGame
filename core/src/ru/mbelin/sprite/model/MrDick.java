@@ -79,9 +79,12 @@ public class MrDick extends Unit {
         }
     }
 
+    /*
     public void draw(SpriteBatch batch) {
         this.draw(batch, this.positionVector);//batch.draw(this, this.positionVector.x, this.positionVector.y, heigth, width);
     }
+
+     */
 
     @Override
     public String toString() {

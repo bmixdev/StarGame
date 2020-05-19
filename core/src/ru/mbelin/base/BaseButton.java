@@ -9,6 +9,8 @@ import ru.mbelin.math.Rnd;
 
 public abstract class BaseButton extends Sprite {
 
+    private static final float SCALE = 0.9f;
+
     private int pointer;
     private boolean pressed;
 
@@ -21,18 +23,19 @@ public abstract class BaseButton extends Sprite {
     }
 
     @Override
-    public boolean touchDown(Vector2 touch, int pointer) {
+    public boolean touchDown(Vector2 touch, int pointer, int button) {
         if (pressed || !isMe(touch)) {
             return false;
         }
-        pressed = true;
-        scale = 0.8f;
         this.pointer = pointer;
+        pressed = true;
+        scale = SCALE;
         return false;
     }
 
+
     @Override
-    public boolean touchUp(Vector2 touch, int pointer) {
+    public boolean touchUp(Vector2 touch, int pointer, int button) {
         if (this.pointer != pointer || !pressed) {
             return false;
         }
@@ -40,7 +43,7 @@ public abstract class BaseButton extends Sprite {
             action();
         }
         pressed = false;
-        scale = 1;
+        scale = 1f;
         return false;
     }
 
