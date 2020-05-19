@@ -10,6 +10,7 @@ import com.badlogic.gdx.math.Vector2;
 import ru.mbelin.base.BaseScreen;
 import ru.mbelin.base.SpritesPool;
 import ru.mbelin.math.Rect;
+
 import ru.mbelin.math.Rnd;
 import ru.mbelin.pool.BulletPool;
 import ru.mbelin.sprite.Background;
@@ -42,7 +43,6 @@ public class GameScreen extends BaseScreen {
         }
         bulletPool = new BulletPool();
         mainShip = new MainShip(atlas, bulletPool);
-
         enemyShipPool = new SpritesPool<EnemyShip>() {
             @Override
             protected EnemyShip newObject() {
@@ -52,6 +52,7 @@ public class GameScreen extends BaseScreen {
         for (int i = 0 ; i < 2; i ++) {
             EnemyShip enemyShip = enemyShipPool.obtain();
         }
+
     }
 
     @Override
@@ -71,6 +72,7 @@ public class GameScreen extends BaseScreen {
         mainShip.resize(worldBounds);
         enemyShipPool.resize(worldBounds);
         _worldBounds = worldBounds;
+
     }
 
     @Override
@@ -111,7 +113,6 @@ public class GameScreen extends BaseScreen {
             star.update(delta);
         }
         bulletPool.updateActiveSprites(delta);
-
         if (enemyShipPool.getActiveObjects().size()!= 0) {
             enemyShipPool.updateActiveSprites(delta);
         }
