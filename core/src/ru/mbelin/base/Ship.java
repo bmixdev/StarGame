@@ -68,6 +68,14 @@ public class Ship extends Sprite {
         boom();
     }
 
+    public void damage(int damage) {
+        hp -=damage;
+        if (hp <= 0) {
+            hp = 0;
+            destroy();
+        }
+    }
+
     protected void autoShoot(float delta) {
         reloadTimer += delta;
         if (reloadTimer >= reloadInterval) {
