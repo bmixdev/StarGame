@@ -20,14 +20,13 @@ public class ButtonNewGame extends BaseButton {
 
     @Override
     public void action() {
-      gameScreen.show();
+      gameScreen.startNewGame();
     }
 
     @Override
     public void resize(Rect worldBounds) {
-        setHeightProportion(0.12f);
-        setBottom(worldBounds.getBottom() + MARGIN);
-        setLeft(worldBounds.getLeft() + MARGIN);
+        setHeightProportion(0.05f);
+        setTop(-0.1f);
         super.resize(worldBounds);
     }
 }

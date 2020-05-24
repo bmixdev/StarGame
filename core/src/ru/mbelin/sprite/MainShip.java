@@ -43,6 +43,17 @@ public class MainShip extends Ship {
         sound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
     }
 
+    public void startNewGame(Rect worldBounds) {
+        flushDestroy();
+        hp = HP;
+        pressedLeft = false;
+        pressedRight = false;
+        leftPointer = INVALID_POINTER;
+        rightPointer = INVALID_POINTER;
+        stop();
+        pos.x = worldBounds.pos.x;
+    }
+
     @Override
     public void resize(Rect worldBounds) {
         super.resize(worldBounds);

@@ -12,7 +12,7 @@ import ru.mbelin.pool.ExplosionPool;
 import ru.mbelin.sprite.Bullet;
 import ru.mbelin.sprite.Explosion;
 
-public class Ship extends Sprite {
+public abstract class Ship extends Sprite {
 
     private static final float DAMAGE_TIMER_INTERVAL = 0.1f;
 
