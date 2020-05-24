@@ -20,6 +20,7 @@ import ru.mbelin.pool.EnemyPool;
 import ru.mbelin.pool.ExplosionPool;
 import ru.mbelin.sprite.Background;
 import ru.mbelin.sprite.Bullet;
+import ru.mbelin.sprite.ButtonNewGame;
 import ru.mbelin.sprite.Enemy;
 import ru.mbelin.sprite.EnemyShip;
 import ru.mbelin.sprite.GameOver;
@@ -32,6 +33,8 @@ import ru.mbelin.utils.Utils;
 public class GameScreen extends BaseScreen {
 
     private enum State{PLAYING, GAME_OVER};
+
+    private static final int STAR_COUNT = 64;
 
     private Texture bg;
     private Background background;
@@ -153,6 +156,9 @@ public class GameScreen extends BaseScreen {
         List<Enemy> enemyList = enemyPool.getActiveObjects();
         List<Bullet> bulletList = bulletPool.getActiveObjects();
         for (Enemy enemy : enemyList) {
+            if (enemy.isDestroyed()) {
+                continue;
+            }
             float minDist = enemy.getHalfWidth() + mainShip.getHalfWidth();
             if (mainShip.pos.dst(enemy.pos) < minDist) {
                 enemy.destroy();
