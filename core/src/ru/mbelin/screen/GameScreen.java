@@ -22,6 +22,7 @@ import ru.mbelin.pool.ExplosionPool;
 import ru.mbelin.sprite.Background;
 import ru.mbelin.sprite.Bullet;
 import ru.mbelin.sprite.ButtonNewGame;
+
 import ru.mbelin.sprite.Enemy;
 import ru.mbelin.sprite.EnemyShip;
 import ru.mbelin.sprite.GameOver;

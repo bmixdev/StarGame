@@ -37,6 +37,16 @@ public class Enemy extends Ship {
         if (getBottom() <= worldBounds.getBottom()) {
             destroy();
         }
+        if (getTop() < worldBounds.getTop()) {
+            v.set(v0);
+            bulletPos.set(pos.x, pos.y - getHalfHeight());
+            autoShoot(delta);
+        }
+        else if ( !visible) {
+            visible = true;
+            shoot();
+            reloadTimer = 0f;
+        }
     }
 
     public void set(
@@ -69,5 +79,6 @@ public class Enemy extends Ship {
                 || bullet.getLeft() > getRight()
                 || bullet.getBottom() > getTop()
                 || bullet.getTop() < pos.y));
+
     }
 }

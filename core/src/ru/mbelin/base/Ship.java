@@ -44,6 +44,7 @@ public abstract class Ship extends Sprite {
         v = new Vector2();
         bulletPos = new Vector2();
         damageAnimateTimer = DAMAGE_TIMER_INTERVAL;
+
     }
 
     public Ship(BulletPool bulletPool, ExplosionPool explosionPool, Rect worldBounds, Sound sound) {
@@ -56,6 +57,7 @@ public abstract class Ship extends Sprite {
         bulletV = new Vector2();
         bulletPos = new Vector2();
         damageAnimateTimer = DAMAGE_TIMER_INTERVAL;
+
     }
 
     @Override
