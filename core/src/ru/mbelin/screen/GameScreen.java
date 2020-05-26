@@ -8,6 +8,8 @@ import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.math.Vector2;
 
+import java.util.List;
+
 import ru.mbelin.base.BaseScreen;
 import ru.mbelin.base.SpritesPool;
 import ru.mbelin.math.Rect;
@@ -17,6 +19,8 @@ import ru.mbelin.pool.BulletPool;
 import ru.mbelin.pool.EnemyPool;
 import ru.mbelin.pool.ExplosionPool;
 import ru.mbelin.sprite.Background;
+import ru.mbelin.sprite.Bullet;
+import ru.mbelin.sprite.Enemy;
 import ru.mbelin.sprite.EnemyShip;
 import ru.mbelin.sprite.MainShip;
 import ru.mbelin.sprite.Star;
@@ -115,11 +119,33 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.update(delta);
         }
+        checkCollision();
         bulletPool.updateActiveSprites(delta);
         enemyPool.updateActiveSprites(delta);
         explosionPool.updateActiveSprites(delta);
         mainShip.update(delta);
         enemyEmitter.generate(delta);
+    }
+
+    // проверка пересечений объектов
+    private void checkCollision() {
+        List<Enemy> enemyList = enemyPool.getActiveObjects();
+        List<Bullet> bulletList = bulletPool.getActiveObjects();
+        for (Enemy enemy : enemyList) {
+            float minDist = enemy.getHalfWidth() + mainShip.getHalfWidth();
+            if (mainShip.pos.dst(enemy.pos) < minDist) {
+                enemy.destroy();
+            }
+            for (Bullet bullet: bulletList) {
+                if (bullet.getOwner() != mainShip) {
+                    continue;
+                }
+                if (!enemy.isOutside(bullet)) {
+                    enemy.damage(bullet.getDamage());
+                    bullet.destroy();
+                }
+            }
+        }
     }
 
     private void free() {
@@ -134,9 +160,9 @@ public class GameScreen extends BaseScreen {
         for (Star star : stars) {
             star.draw(batch);
         }
+        enemyPool.drawActiveSprites(batch);
         bulletPool.drawActiveSprites(batch);
         mainShip.draw(batch);
-        enemyPool.drawActiveSprites(batch);
         explosionPool.drawActiveSprites(batch);
         batch.end();
     }

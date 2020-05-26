@@ -85,6 +85,7 @@ public class EnemyEmitter {
                         ENEMY_SMALL_HP,
                         ENEMY_SMALL_HEIGHT
                 );
+
             } else if (type < 0.8f) {
                 enemy.set(
                         enemyMediumRegions,
