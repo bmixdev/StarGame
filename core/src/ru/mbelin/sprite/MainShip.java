@@ -12,16 +12,19 @@ import ru.mbelin.pool.ExplosionPool;
 
 public class MainShip extends Ship {
 
+
     private static final float SIZE = 0.15f;
     private static final float MARGIN = 0.05f;
     private static final int INVALID_POINTER = -1;
-    private static final int HP = 100;
+    private static final int HP = 10;
 
     private int leftPointer;
     private int rightPointer;
 
     private boolean pressedLeft;
     private boolean pressedRight;
+
+
 
     public MainShip(TextureAtlas atlas, BulletPool bulletPool, ExplosionPool explosionPool) {
         super(atlas.findRegion("main_ship"), 1, 2, 2);
@@ -38,6 +41,17 @@ public class MainShip extends Ship {
         reloadTimer = reloadInterval;
         hp = HP;
         sound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
+    }
+
+    public void startNewGame(Rect worldBounds) {
+        flushDestroy();
+        hp = HP;
+        pressedLeft = false;
+        pressedRight = false;
+        leftPointer = INVALID_POINTER;
+        rightPointer = INVALID_POINTER;
+        stop();
+        pos.x = worldBounds.pos.x;
     }
 
     @Override
@@ -157,5 +171,12 @@ public class MainShip extends Ship {
 
     private void stop() {
         v.setZero();
+    }
+
+    public boolean isBulletCollision(Bullet bullet) {
+        return (!(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > pos.y
+                || bullet.getTop() < getBottom()));
     }
 }

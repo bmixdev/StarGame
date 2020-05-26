@@ -4,13 +4,17 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.math.Vector2;
 
+import org.omg.CORBA.INTERNAL;
+
 import ru.mbelin.math.Rect;
 import ru.mbelin.pool.BulletPool;
 import ru.mbelin.pool.ExplosionPool;
 import ru.mbelin.sprite.Bullet;
 import ru.mbelin.sprite.Explosion;
 
-public class Ship extends Sprite {
+public abstract class Ship extends Sprite {
+
+    private static final float DAMAGE_TIMER_INTERVAL = 0.1f;
 
     protected final Vector2 v0;
     protected final Vector2 v;
@@ -32,11 +36,15 @@ public class Ship extends Sprite {
 
     protected int hp;
 
+    private float damageAnimateTimer;
+
     public Ship(TextureRegion region, int rows, int cols, int frames) {
         super(region, rows, cols, frames);
         v0 = new Vector2();
         v = new Vector2();
         bulletPos = new Vector2();
+        damageAnimateTimer = DAMAGE_TIMER_INTERVAL;
+
     }
 
     public Ship(BulletPool bulletPool, ExplosionPool explosionPool, Rect worldBounds, Sound sound) {
@@ -48,6 +56,8 @@ public class Ship extends Sprite {
         v = new Vector2();
         bulletV = new Vector2();
         bulletPos = new Vector2();
+        damageAnimateTimer = DAMAGE_TIMER_INTERVAL;
+
     }
 
     @Override
@@ -60,6 +70,10 @@ public class Ship extends Sprite {
     public void update(float delta) {
         super.update(delta);
         pos.mulAdd(v, delta);
+        damageAnimateTimer += delta;
+        if (damageAnimateTimer>= DAMAGE_TIMER_INTERVAL) {
+            frame = 0;
+        }
     }
 
     @Override
@@ -68,7 +82,13 @@ public class Ship extends Sprite {
         boom();
     }
 
+    public int getDamage() {
+        return damage;
+    }
+
     public void damage(int damage) {
+        damageAnimateTimer = 0f;
+        frame = 1;
         hp -=damage;
         if (hp <= 0) {
             hp = 0;

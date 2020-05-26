@@ -24,6 +24,16 @@ public class Enemy extends Ship {
     @Override
     public void update(float delta) {
         super.update(delta);
+        bulletPos.set(pos.x, pos.y - getHalfHeight());
+        if (getTop() < worldBounds.getTop()) {
+            v.set(v0);
+            autoShoot(delta);
+        }
+        else if ( !visible) {
+            visible = true;
+            shoot();
+            reloadTimer = 0f;
+        }
         if (getBottom() <= worldBounds.getBottom()) {
             destroy();
         }
@@ -62,5 +72,13 @@ public class Enemy extends Ship {
         this.hp = hp;
         setHeightProportion(height);
         this.v.set(0, V_Y);
+    }
+
+    public boolean isBulletCollision(Bullet bullet) {
+        return (!(bullet.getRight() < getLeft()
+                || bullet.getLeft() > getRight()
+                || bullet.getBottom() > getTop()
+                || bullet.getTop() < pos.y));
+
     }
 }
