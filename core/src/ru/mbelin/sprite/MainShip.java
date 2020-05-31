@@ -35,23 +35,21 @@ public class MainShip extends Ship {
         bulletHeight = 0.01f;
         damage = 1;
         v0.set(0.5f, 0);
-        leftPointer = INVALID_POINTER;
-        rightPointer = INVALID_POINTER;
-        reloadInterval = 1.0f;
+        reloadInterval = 0.25f;
         reloadTimer = reloadInterval;
-        hp = HP;
         sound = Gdx.audio.newSound(Gdx.files.internal("sounds/laser.wav"));
+        startNewGame();
     }
 
-    public void startNewGame(Rect worldBounds) {
-        flushDestroy();
+    public void startNewGame() {
         hp = HP;
-        pressedLeft = false;
-        pressedRight = false;
         leftPointer = INVALID_POINTER;
         rightPointer = INVALID_POINTER;
+        pressedLeft = false;
+        pressedRight = false;
         stop();
-        pos.x = worldBounds.pos.x;
+        this.pos.x = 0;
+        flushDestroy();
     }
 
     @Override
